@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from chatapi.edwisor.com/eventDoc/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 May 2018 07:42:04 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>Events</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/> -->
+    <style>
+    /* Custom Stylesheet */
+
+    .icon-block {
+        padding: 0 15px;
+    }
+
+    .icon-block .material-icons {
+        font-size: inherit;
+    }
+    </style>
+</head>
+
+<body>
+   
+    <div class="section no-pad-bot" style="margin-bottom: 0px" id="index-banner">
+        <div class="container" style="width: 80%">
+          <p style="font-size: 2em; font-weight: 540; text-align: center">Events documentation</p>
+            <div class="row">
+
+                <div class="col hide-on-small-only m3 l2">
+                    <ul class="section table-of-contents" style="position: fixed">
+                        <li><a href="#listen" style="color: #03a9f4; font-size: 1.2em; font-weight: bold">Listen</a></li>
+                        <li><a href="#verifyUser">verifyUser</a></li>
+                        <li><a href="#usersList">online-user-list</a></li>
+                        <li><a href="#authError">auth-error</a></li>
+                        <li><a href="#userId">userId</a></li>
+
+                        <li><a href="#emit" style="color: #03a9f4; font-size: 1.2em; font-weight: bold">Emit</a></li>
+                        <li><a href="#set-user">setUser</a></li>
+                        <li><a href="#notify-user">notifyUser</a></li>
+                        <li><a href="#email-notification">email-notification</a></li>
+                        <li><a href="#disconnect">disconnect</a></li>
+                    </ul>
+                </div>
+
+                <div class="col s12 m9 l10">
+
+                    <div id="listen" class="section scrollspy"></div>
+                    <h4>Events to listen</h4>
+
+                    <div id="verifyUser" class="section scrollspy">
+                        <h5>verifyUser event</h5>
+                        This event <span style="font-weight: 600">("verifyUser")</span> has to be listened on the user's end to verify user authentication.<br/>
+                        user will only be set as online user after verification of authentication token.<br/>
+                    </div>
+                    <div id="usersList" class="section scrollspy">
+                        <h5>online-user-list event</h5>
+                        This event <span style="font-weight: 600">("online-user-list")</span> has to be listened on the user's end to identify all available Normal(non-admin) users that are currently online.<br/>
+                      
+                        The output will be an object, object has key as userId and value as full name.
+                    </div>
+                    <div id="authError" class="section scrollspy">
+                        <h5>auth-error event</h5>
+                        This event <span style="font-weight: 600">("auth-error")</span> has to be listened to know if any error has occurred on socket.<br/> This event is emitted to every
+						user of Meeting Planner Application.
+                    </div>
+                    <div id="userId" class="section scrollspy">
+                        <h5>userId event</h5>
+                        This event <span style="font-weight: 600">("userId")</span> has to be listened to get the notification when any meeting is Scheduled/Updated/Deleted.<br>
+                        Every user has to listen on its own userId for the meeting notifications.
+                    </div>
+
+                    <div id="emit" class="section scrollspy"></div>
+                    <h4>Events to emit</h4>
+
+                    <div id="set-user" class="section scrollspy">
+                        <h5>set-user event</h5>
+                        This event <span style="font-weight: 600">("set-user")</span> has to be emitted when a user comes online.<br/>
+                        User can only be set as online only after verification of authentication token.<br>
+                        The following data has to be emitted:<br/>
+                        authentication token<br>
+                        eg- ("set-user",authToken);
+
+                    </div>
+                    <div id="notify-user" class="section scrollspy">
+                        <h5>notify-user event</h5>
+                        This event <span style="font-weight: 600">("notify-user")</span> has to be emitted when a meeting has Scheduled/Update/Deleted.<br/>
+                        This event will notify with user with whom the meeting is Scheduled/Updated/Deleted.
+                        The following data has to be emitted:<br/>
+                        eg-
+                            data = { userId:"Id od the user who is to be notified", toast:"Message which is to be shown to user" };<br>
+                            ("notify-user",data);
+                    </div>
+                    <div id="email-notification" class="section scrollspy">
+                        <h5>email-notification event</h5>
+                        This event <span style="font-weight: 600">("email-notification")</span> has to be emitted to remind user of the upcoming meeting through email.<br/>
+                        This event will notify with user with email to get ready for upcoming meeting.
+                        The following data has to be emitted:<br/>
+                        -- If you want to notify the admin as well as participating user then pass the meetingDetails object by setting property "email" Email of admin and notifyUser= "true".<br>
+                        -- If you want to notify the admin for the meeting then pass the meetingDetails object by seeting the property "email" as email of the admin.<br>
+                        -- If you want to notify the Particapant of the meeting that meeting has Scheduled then pass the MeetingDetails object with property "type" set as "create".<br>
+                        -- If you want to notify the Particapant of the meeting that meeting has Re-Scheduled then pass the MeetingDetails object with property "type" set as "update".<br>
+                        -- If you want to notify the Particapant of the meeting that meeting has Cancelled then pass the MeetingDetails object with property "type" set as "delete".<br>
+                        -- If you want to notify the particpant that the meeting will start soon then don't set any of the above property on meeting details object.<br>
+                        
+                        eg-
+                            ("email-notification",meetingDetails);
+                    </div>
+					<div id="disconnect" class="section scrollspy">
+                        <h5>disconnection</h5>
+                        This event <span style="font-weight: 600">("disconnection")</span> has to be emitted, when the user gets disconnected(logout).<br/>
+                        eg- ("disconnect","");
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br/><br/><br/><br/>
+        <footer style="background-color: black; min-height: 3em">
+            <center style="color: white; margin: auto; padding-top: 1em;">COPYRIGHT &copy<span>2017</span> SARASWATI DIGITAL PVT. LTD.</center>
+        </footer>
+    <!--  Scripts-->
+    <script src="../../code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="../../cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.scrollspy').scrollSpy();
+    });
+    </script>
+    <script>
+    (function($) {
+        $(function() {
+
+            $('.button-collapse').sideNav();
+
+        }); // end of document ready
+    })(jQuery); // end of jQuery name space
+    </script>
+</body>
+
+
+<!-- Mirrored from chatapi.edwisor.com/eventDoc/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 May 2018 07:42:06 GMT -->
+</html>
